@@ -145,7 +145,7 @@ export function AppSidebar() {
             </div>
             <div className="flex flex-col gap-0.5">
               <span className="text-sm font-semibold leading-none text-sidebar-foreground">
-                SalaBook
+                Rooms
               </span>
               <span className="text-xs leading-none text-muted-foreground">
                 Sistema de Reservas
