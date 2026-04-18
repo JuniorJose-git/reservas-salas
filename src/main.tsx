@@ -7,6 +7,7 @@ import { routeTree } from '@/routeTree.gen'
 import '@/styles/index.css'
 import 'overlayscrollbars/overlayscrollbars.css'
 import { APIProvider, useAPI } from './hooks/useAPI'
+import { AuthProvider } from './components/auth-provider'
 
 // Create a new router instance
 const TanStackQueryProviderContext = TanStackQueryProvider.getContext()
@@ -53,9 +54,11 @@ if (rootElement && !rootElement.innerHTML) {
         <StrictMode>
             <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
                 <APIProvider {...TanStackQueryProviderContext}>
-                    <OverlayScrollbarsComponent style={{ height: '100vh' }}>
-                        <App />
-                    </OverlayScrollbarsComponent>
+                    <AuthProvider>
+                        <OverlayScrollbarsComponent style={{ height: '100vh' }}>
+                            <App />
+                        </OverlayScrollbarsComponent>
+                    </AuthProvider>
                 </APIProvider>
             </TanStackQueryProvider.Provider>
         </StrictMode >

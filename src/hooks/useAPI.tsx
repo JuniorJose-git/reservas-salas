@@ -1,4 +1,4 @@
-import { requestFn } from '@openapi-qraft/react'
+import { requestFn as baseRequestFn } from '@openapi-qraft/react'
 import { createContext, useContext, useMemo } from 'react'
 import type { QueryClient } from '@tanstack/react-query'
 import { createAPIClient } from '#/api'
@@ -7,12 +7,23 @@ const APIContext = createContext<{
   api: ReturnType<typeof createApiClientInstance>
 }>(null!)
 
+const authRequestFn: typeof baseRequestFn = (schema, options) => {
+  const token = localStorage.getItem('auth_token')
+  return baseRequestFn(schema, {
+    ...options,
+    headers: {
+      ...options.headers,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  })
+}
+
 function createApiClientInstance(queryClient: QueryClient) {
   return createAPIClient({
-    requestFn,
+    requestFn: authRequestFn,
     queryClient,
     baseUrl: import.meta.env.VITE_API_BASE_URL,
-  }).api
+  })
 }
 
 const APIProvider = ({

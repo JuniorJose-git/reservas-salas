@@ -1,4 +1,4 @@
-import { createRootRouteWithContext } from '@tanstack/react-router'
+import { createRootRouteWithContext, useRouterState } from '@tanstack/react-router'
 import type { QueryClient } from '@tanstack/react-query'
 import { AppSidebar } from '#/components/app-sidebar'
 import { SidebarInset, SidebarProvider } from '#/components/ui/sidebar'
@@ -13,6 +13,13 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const isLoginPage = pathname === '/login' || pathname === '/login/'
+
+  if (isLoginPage) {
+    return <>{children}</>
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
