@@ -6,6 +6,7 @@ import * as TanStackQueryProvider from '@/integrations/tanstack-query/root-provi
 import { routeTree } from '@/routeTree.gen'
 import '@/styles/index.css'
 import 'overlayscrollbars/overlayscrollbars.css'
+import { APIProvider, useAPI } from './hooks/useAPI'
 
 // Create a new router instance
 const TanStackQueryProviderContext = TanStackQueryProvider.getContext()
@@ -15,6 +16,7 @@ const router = createRouter({
     scrollToTopSelectors: ['div[data-overlayscrollbars-contents]'],
     context: {
         queryClient: undefined!,
+        api: undefined!,
     },
     defaultPreload: 'intent',
     scrollRestoration: true,
@@ -34,6 +36,7 @@ function App() {
         <RouterProvider
             router={router}
             context={{
+                api: useAPI().api,
                 queryClient: TanStackQueryProviderContext.queryClient,
             }}
         />
@@ -49,9 +52,11 @@ if (rootElement && !rootElement.innerHTML) {
     root.render(
         <StrictMode>
             <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
+                <APIProvider {...TanStackQueryProviderContext}>
                     <OverlayScrollbarsComponent style={{ height: '100vh' }}>
                         <App />
                     </OverlayScrollbarsComponent>
+                </APIProvider>
             </TanStackQueryProvider.Provider>
         </StrictMode >
     )
